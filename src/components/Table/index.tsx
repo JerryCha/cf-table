@@ -1,5 +1,7 @@
-import React from "react";
+import { Table as AntTable } from "antd";
 
-const Table = () => <></>;
+const Table = () => {
+  return <AntTable />;
+};
 
 export default Table;
