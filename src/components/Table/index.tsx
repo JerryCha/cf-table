@@ -1,7 +1,6 @@
-import { Table as AntTable, Button, Pagination } from "antd";
-import { IColumn } from "./types/column";
 import React from "react";
-
+import { Table as AntTable, Pagination } from "antd";
+import { IColumn } from "./types/column";
 interface TableProps {
   columns?: IColumn[];
   pagination?: {
@@ -10,11 +9,15 @@ interface TableProps {
     defaultSize?: number;
     defaultPage?: number;
   };
+  showRowNumber?: boolean;
+  dataLoader?: unknown;
   toolbar?: () => React.ReactNode;
+  plugins?: unknown;
 }
 
 const Table = (props: TableProps) => {
   const { toolbar } = props;
+
   return (
     <div className="cf-table-root">
       {toolbar ? <div className="cf-table-toolbar">{toolbar()}</div> : null}
