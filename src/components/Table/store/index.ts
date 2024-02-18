@@ -21,3 +21,12 @@ export const dataAtom = atom<ITableData>({
 export const paginationAtom = atom<IPagination>({ index: null, size: null });
 
 export const selectionAtom = atom<IRowSelection[]>([]);
+
+export const createDataAtom = (initData: ITableData) =>
+  atom<ITableData>(initData);
+
+export const createPaginationAtom = (initPagination: IPagination) =>
+  atom<IPagination>(initPagination);
+
+export const createSelectionAtom = (initSelections: IRowSelection[]) =>
+  atom<IRowSelection[]>(initSelections);

@@ -52,6 +52,22 @@ export interface ITableInstance {
    */
   setSize: (size: number) => void;
   /**
+   * 获取当前选中行
+   * @returns 选中行
+   */
+  getSelections: () => Array<DataItem>;
+  /**
+   * 设置选中行
+   * @param selections 选中行
+   * @returns
+   */
+  setSelections: (selections: Array<DataItem>) => void;
+  /**
+   * 清楚选中行
+   * @returns
+   */
+  clearSelections: () => void;
+  /**
    * 按当前参数刷新表格数据
    * @returns
    */

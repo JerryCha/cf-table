@@ -1,0 +1,35 @@
+[
+  {
+    "name": "id",
+    "title": "ID",
+    "visible": false,
+    "primaryKey": true
+  },
+  {
+    "name": "name",
+    "title": "TITLE",
+    "width": 160
+  },
+  {
+    "name": "age",
+    "title": "AGE",
+    "width": 80
+  },
+  {
+    "name": "group1",
+    "title": "GROUP 1",
+    "isGroup": true,
+    "columns": [
+      {
+        "name": "name",
+        "title": "TITLE",
+        "width": 160
+      },
+      {
+        "name": "age",
+        "title": "AGE",
+        "width": 80
+      }
+    ]
+  }
+]

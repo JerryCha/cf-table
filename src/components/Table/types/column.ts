@@ -3,4 +3,8 @@ export interface IColumn {
   title?: string;
   width?: number;
   fixed?: "left" | "right";
+  isGroup?: boolean;
+  columns?: IColumn[];
+  primaryKey?: boolean;
+  visible?: boolean;
 }

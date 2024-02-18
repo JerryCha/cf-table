@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IColumn } from "../types/column";
-import type { TableColumnType } from "antd";
+import type { TableColumnGroupType, TableColumnType } from "antd";
 import { DataItem } from "../types/store";
 import React, { CSSProperties } from "react";
+import { ITableInstance } from "../types/instance";
 
 interface CreateAntTableColumnOptions {
-  customRender?: (value: any, index: number, row: DataItem) => React.ReactNode;
+  customRender?: (
+    value: any,
+    index: number,
+    row: DataItem,
+    table: ITableInstance
+  ) => React.ReactNode;
   onCell?: (
     value: any,
     index: number,
-    row: DataItem
+    row: DataItem,
+    table: ITableInstance
   ) => {
     rowSpan?: number;
     colSpan?: number;
@@ -20,9 +27,21 @@ interface CreateAntTableColumnOptions {
 
 export const createAntTableColumn = (
   columnDef: IColumn,
-  options: CreateAntTableColumnOptions
-): TableColumnType<DataItem> => {
-  const { name, title } = columnDef;
+  options: CreateAntTableColumnOptions,
+  table: ITableInstance
+): TableColumnType<DataItem> | TableColumnGroupType<DataItem> => {
+  const { name, title, width, fixed, isGroup, columns } = columnDef;
+
+  if (isGroup) {
+    const children = columns
+      ?.filter((col) => col.visible === undefined || col.visible === true)
+      .map((column) => createAntTableColumn(column, options, table));
+    return {
+      key: `group-${title}`,
+      title,
+      children: children ?? [],
+    };
+  }
 
   const { customRender, onCell } = options;
 
@@ -30,13 +49,15 @@ export const createAntTableColumn = (
     key: name,
     dataIndex: name,
     title,
+    fixed,
+    width,
     ellipsis: true,
     render: (value, record, index) => {
-      return customRender?.(value, index, record) ?? value;
+      return customRender?.(value, index, record, table) ?? value;
     },
     onCell: (record, index) => {
       const value = record[name];
-      return onCell?.(value, index!, record) ?? {};
+      return onCell?.(value, index!, record, table) ?? {};
     },
   };
 };
