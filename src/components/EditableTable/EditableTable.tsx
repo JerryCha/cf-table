@@ -1,5 +1,9 @@
-interface EditableTableProps {}
+import Table, { TableProps } from "../Table";
 
-const EditableTable = () => <></>;
+interface EditableTableProps extends TableProps {}
+
+const EditableTable = (props: EditableTableProps) => {
+  return <Table {...props} />;
+};
 
 export default EditableTable;

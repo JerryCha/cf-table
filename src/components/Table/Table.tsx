@@ -11,7 +11,7 @@ import { ColumnType } from "antd/lib/table";
 import { ITablePlugin } from "./types/plugin";
 import { useDefaultStore } from "./hooks/useDefaultStore";
 
-interface TableProps {
+export interface TableProps {
   columns?: IColumn[];
   pagination?: {
     enabled: boolean;
