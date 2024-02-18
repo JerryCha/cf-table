@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Table as AntTable, Pagination, Typography } from "antd";
 import { useRequest } from "ahooks";
 import { IColumn } from "./types/column";
-import styles from "./index.module.less";
+import styles from "./Table.module.less";
 import { createAntTableColumn } from "./utils/column";
 import { DataItem, IPagination, ITableData } from "./types/store";
 import { ITableInstance } from "./types/instance";
