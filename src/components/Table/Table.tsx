@@ -10,8 +10,9 @@ import { TableInstanceProvier } from "./components/TableInstanceProvider";
 import { ColumnType } from "antd/lib/table";
 import { ITablePlugin } from "./types/plugin";
 import { useDefaultStore } from "./hooks/useDefaultStore";
+import { RowWrapper } from "./components/RowWrapper";
 
-export interface TableProps {
+export interface TableProps<I extends ITableInstance> {
   columns?: IColumn[];
   pagination?: {
     enabled: boolean;
@@ -25,11 +26,13 @@ export interface TableProps {
   dataLoader?: (pagination: IPagination) => Promise<ITableData>;
   loadOnInit?: boolean;
   loadingTip?: string;
-  toolbar?: (table: ITableInstance) => React.ReactNode;
-  plugins?: ITablePlugin[];
+  toolbar?: (table: I) => React.ReactNode;
+  plugin?: ITablePlugin<I>;
 }
 
-const Table = (props: TableProps) => {
+function Table<I extends ITableInstance = ITableInstance>(
+  props: TableProps<I>
+) {
   const {
     toolbar,
     columns,
@@ -40,6 +43,7 @@ const Table = (props: TableProps) => {
     rowSelection: rowSelectionConf,
     expandable,
     loadingTip,
+    plugin,
   } = props;
 
   const store = useDefaultStore({
@@ -102,7 +106,7 @@ const Table = (props: TableProps) => {
     return primary;
   }, [columns]);
 
-  const tableInstance = useMemo<ITableInstance>(() => {
+  const tableInstance = useMemo<I>(() => {
     return {
       getIndex() {
         return pagination.index;
@@ -148,7 +152,15 @@ const Table = (props: TableProps) => {
       refresh() {
         refresh();
       },
-    };
+      ...(plugin?.extendsTableInstance?.({
+        pagination,
+        setPagination,
+        data,
+        setData,
+        selections,
+        setSelections,
+      }) ?? {}),
+    } as I;
   }, [
     pagination,
     setPagination,
@@ -158,12 +170,19 @@ const Table = (props: TableProps) => {
     selections,
     setSelections,
     primaryKey,
+    plugin?.extendsTableInstance,
   ]);
 
   const renderColumns = useMemo(() => {
     const dataColumns = columns
       ?.filter((col) => col.visible === undefined || col.visible === true)
-      .map((col) => createAntTableColumn(col, {}, tableInstance));
+      .map((col) =>
+        createAntTableColumn(
+          col,
+          { customRender: plugin?.cell?.render, onCell: plugin?.cell?.onCell },
+          tableInstance
+        )
+      );
     if (showRowNumber) {
       const rowNoColumn: ColumnType<DataItem> = {
         key: "rowNo",
@@ -174,7 +193,7 @@ const Table = (props: TableProps) => {
       return [rowNoColumn, ...(dataColumns ?? [])];
     }
     return dataColumns;
-  }, [columns, showRowNumber, tableInstance]);
+  }, [columns, showRowNumber, tableInstance, plugin?.cell]);
 
   return (
     <TableInstanceProvier tableInstance={tableInstance}>
@@ -191,7 +210,15 @@ const Table = (props: TableProps) => {
             columns={renderColumns}
             dataSource={data.list}
             pagination={false}
+            components={{ body: { row: RowWrapper } }}
             expandable={expandable}
+            onRow={(row, index) => {
+              return {
+                index,
+                row,
+                render: plugin?.row?.render,
+              };
+            }}
             rowSelection={
               rowSelectionConf
                 ? {
@@ -230,6 +257,6 @@ const Table = (props: TableProps) => {
       </div>
     </TableInstanceProvier>
   );
-};
+}
 
 export default Table;

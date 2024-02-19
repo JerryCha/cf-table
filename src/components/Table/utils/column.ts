@@ -9,12 +9,14 @@ interface CreateAntTableColumnOptions {
   customRender?: (
     value: any,
     index: number,
+    name: string,
     row: DataItem,
     table: ITableInstance
   ) => React.ReactNode;
   onCell?: (
     value: any,
     index: number,
+    name: string,
     row: DataItem,
     table: ITableInstance
   ) => {
@@ -53,11 +55,11 @@ export const createAntTableColumn = (
     width,
     ellipsis: true,
     render: (value, record, index) => {
-      return customRender?.(value, index, record, table) ?? value;
+      return customRender?.(value, index, name, record, table) ?? value;
     },
     onCell: (record, index) => {
       const value = record[name];
-      return onCell?.(value, index!, record, table) ?? {};
+      return onCell?.(value, index!, name, record, table) ?? {};
     },
   };
 };

@@ -1,27 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { DataItem, DataList } from "./store";
+import { ITableInstance } from "../types/instance";
+import { useDefaultStore } from "../hooks/useDefaultStore";
 
-export interface ITablePlugin {
+export interface ITablePlugin<T extends ITableInstance> {
   /**
    *
    * @param table 表格实例
    * @returns ReactNode
    */
-  toolbar?: (table: unknown) => React.ReactNode;
+  toolbar?: (table: T) => React.ReactNode;
   /**
    * 单元格定制
    */
   cell?: {
-    render?: (value: any, index: number, row: DataItem) => React.ReactNode;
-    onCell?: () => unknown;
+    render?: (
+      value: any,
+      index: number,
+      name: string,
+      row: DataItem,
+      table: T
+    ) => React.ReactNode;
+    onCell?: () => Record<string, any>;
   };
   /**
    * 行定制
    */
   row?: {
-    render?: (index: number, row: DataItem) => React.ReactNode;
-    onRow?: (index: number, row: DataItem) => unknown;
+    render?: (
+      index: number,
+      row: DataItem,
+      children: React.ReactNode
+    ) => React.ReactNode;
+    onRow?: () => Record<string, any>;
   };
   /**
    * 表格本体定制
@@ -29,5 +41,7 @@ export interface ITablePlugin {
   body?: {
     render?: (list: DataList) => React.ReactNode;
   };
-  createStore?: () => unknown;
+  extendsTableInstance?: (
+    table: ReturnType<typeof useDefaultStore>
+  ) => Record<string, any>;
 }

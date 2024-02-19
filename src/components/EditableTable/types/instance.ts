@@ -19,4 +19,15 @@ export interface IEditableTableInstance extends ITableInstance {
    * @returns
    */
   cancelEdit: (index: number) => void;
+  /**
+   * 指定行正在编辑中
+   * @param index 行号索引
+   * @returns 正在编辑中
+   */
+  isEditing: (index: number) => boolean;
+  /**
+   * 有处于编辑中的行
+   * @returns 有处于编辑中的行
+   */
+  hasEditingRow: () => boolean;
 }
