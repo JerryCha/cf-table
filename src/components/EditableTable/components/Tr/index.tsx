@@ -1,9 +1,9 @@
 import { Form } from "antd";
 import { DataItem } from "../../../Table";
 import { TrContext } from "../../contexts/TrContext";
-import { editingAtom } from "../../store";
 import { useAtomValue } from "jotai";
 import React, { useMemo } from "react";
+import { useEditingAtom } from "components/EditableTable/hooks/useEditingAtom";
 
 interface TrProps {
   index: number;
@@ -18,6 +18,7 @@ interface TrProps {
 
 const Tr = (props: React.PropsWithChildren<TrProps>) => {
   const { children, index, row, render = () => children } = props;
+  const { editingAtom } = useEditingAtom();
   const editing = useAtomValue(editingAtom);
   const rowIsEditing = editing[index];
 

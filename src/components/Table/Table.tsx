@@ -177,7 +177,7 @@ function Table<I extends ITableInstance = ITableInstance>(
     const dataColumns = columns
       ?.filter((col) => col.visible === undefined || col.visible === true)
       .map((col) =>
-        createAntTableColumn(
+        createAntTableColumn<I>(
           col,
           { customRender: plugin?.cell?.render, onCell: plugin?.cell?.onCell },
           tableInstance

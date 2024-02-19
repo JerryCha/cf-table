@@ -1,8 +1,7 @@
-import { useAtomValue } from "jotai";
 import { DataItem } from "../../../Table";
-import { editingAtom } from "../../store";
 import { Form } from "antd";
 import { IEditableTableInstance } from "../../types/instance";
+import { useRowContext } from "components/EditableTable/hooks/useRowContext";
 
 interface TdProps<T extends IEditableTableInstance> {
   index: number;
@@ -34,8 +33,8 @@ function Td<T extends IEditableTableInstance>(
     render = () => children,
     table,
   } = props;
-  const editingStore = useAtomValue(editingAtom);
-  const editing = editingStore[index];
+
+  const { editing } = useRowContext();
 
   return (
     <Form.Item noStyle name={name}>

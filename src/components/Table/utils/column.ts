@@ -5,20 +5,20 @@ import { DataItem } from "../types/store";
 import React, { CSSProperties } from "react";
 import { ITableInstance } from "../types/instance";
 
-interface CreateAntTableColumnOptions {
+interface CreateAntTableColumnOptions<I extends ITableInstance> {
   customRender?: (
     value: any,
     index: number,
     name: string,
     row: DataItem,
-    table: ITableInstance
+    table: I
   ) => React.ReactNode;
   onCell?: (
     value: any,
     index: number,
     name: string,
     row: DataItem,
-    table: ITableInstance
+    table: I
   ) => {
     rowSpan?: number;
     colSpan?: number;
@@ -27,11 +27,11 @@ interface CreateAntTableColumnOptions {
   };
 }
 
-export const createAntTableColumn = (
+export function createAntTableColumn<I extends ITableInstance>(
   columnDef: IColumn,
-  options: CreateAntTableColumnOptions,
-  table: ITableInstance
-): TableColumnType<DataItem> | TableColumnGroupType<DataItem> => {
+  options: CreateAntTableColumnOptions<I>,
+  table: I
+): TableColumnType<DataItem> | TableColumnGroupType<DataItem> {
   const { name, title, width, fixed, isGroup, columns } = columnDef;
 
   if (isGroup) {
@@ -62,4 +62,4 @@ export const createAntTableColumn = (
       return onCell?.(value, index!, name, record, table) ?? {};
     },
   };
-};
+}
