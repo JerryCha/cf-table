@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { atom } from "jotai";
+import { IEditingStore } from "../types/store";
 
-interface RowEditingState {
-  state: unknown;
-  form: unknown;
-}
-
-export const createEditingAtom = () => atom<Record<number, boolean>>({});
+// export const createEditingAtom = () => atom<Record<number, boolean>>({});
+export const createEditingAtom = () => atom<IEditingStore>({});

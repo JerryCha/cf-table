@@ -1,7 +1,9 @@
-import { DataItem } from "../../../Table";
-import { Form } from "antd";
+import { DataItem, IColumn } from "../../../Table";
 import { IEditableTableInstance } from "../../types/instance";
-import { useRowContext } from "components/EditableTable/hooks/useRowContext";
+import { useRowContext } from "../../hooks/useRowContext";
+import React from "react";
+import { IRowFieldProps } from "../../types/row";
+import { DefaultCellField } from "../RowForm";
 
 interface TdProps<T extends IEditableTableInstance> {
   index: number;
@@ -12,12 +14,13 @@ interface TdProps<T extends IEditableTableInstance> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any,
     index: number,
-    name: string,
     row: DataItem,
+    column: IColumn,
     editing: boolean,
     table: T
   ) => React.ReactNode;
-  name: string;
+  Field?: React.ComponentType<IRowFieldProps>;
+  column: IColumn;
   table: T;
 }
 
@@ -29,17 +32,20 @@ function Td<T extends IEditableTableInstance>(
     value,
     row,
     index,
-    name,
     render = () => children,
     table,
+    column,
+    Field = DefaultCellField,
   } = props;
 
   const { editing } = useRowContext();
 
-  return (
-    <Form.Item noStyle name={name}>
-      {render?.(value, index, name, row, editing, table) ?? value}
-    </Form.Item>
+  return editing ? (
+    <Field column={column} row={row}>
+      {render?.(value, index, row, column, editing, table) ?? value}
+    </Field>
+  ) : (
+    render?.(value, index, row, column, editing, table) ?? value
   );
 }
 

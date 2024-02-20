@@ -14,7 +14,5 @@ interface RowWrapperProps extends HTMLAttributes<HTMLTableRowElement> {
 export const RowWrapper = (props: React.PropsWithChildren<RowWrapperProps>) => {
   const { index, row, render, children, ...rest } = props;
 
-  console.log("ROW WRAPPER", index, row, render);
-
   return <tr {...rest}>{render?.(index, row, children) ?? children}</tr>;
 };

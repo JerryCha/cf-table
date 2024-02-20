@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { DataItem, ITablePlugin } from "../../Table";
+import React, {
+  ForwardRefExoticComponent,
+  PropsWithoutRef,
+  RefAttributes,
+} from "react";
+import { DataItem, IColumn, ITablePlugin } from "../../Table";
 import { IEditableTableInstance } from "./instance";
+import { IRowFieldProps, IRowFormProps, IRowFormRef } from "./row";
 
 export interface IEditableTablePlugin<T extends IEditableTableInstance>
   extends Pick<ITablePlugin<T>, "extendsTableInstance" | "body"> {
@@ -10,8 +15,8 @@ export interface IEditableTablePlugin<T extends IEditableTableInstance>
     render?: (
       value: any,
       index: number,
-      name: string,
       row: DataItem,
+      column: IColumn,
       editing: boolean,
       table: T
     ) => React.ReactNode;
@@ -25,5 +30,11 @@ export interface IEditableTablePlugin<T extends IEditableTableInstance>
       editing: boolean
     ) => React.ReactNode;
     onRow?: () => unknown;
+  };
+  form?: {
+    Form?: ForwardRefExoticComponent<
+      PropsWithoutRef<IRowFormProps> & RefAttributes<IRowFormRef>
+    >;
+    Field?: React.ComponentType<IRowFieldProps>;
   };
 }

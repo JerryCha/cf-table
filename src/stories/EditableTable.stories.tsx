@@ -23,18 +23,23 @@ export const TestStory = () => {
           <Space>
             <Button
               onClick={() => {
-                console.log(table);
                 table.beginEdit(0);
               }}
             >
               EDIT ROW 0
+            </Button>
+            <Button
+              onClick={() => {
+                table.endEdit(0);
+              }}
+            >
+              END EDIT ROW 0
             </Button>
           </Space>
         )}
         plugin={{
           cell: {
             render: (value, index, name, row, editing) => {
-              console.log(value, editing);
               return editing ? <Input /> : value;
             },
           },

@@ -3,6 +3,7 @@ import React from "react";
 import { DataItem, DataList } from "./store";
 import { ITableInstance } from "../types/instance";
 import { useDefaultStore } from "../hooks/useDefaultStore";
+import { IColumn } from "./column";
 
 export interface ITablePlugin<T extends ITableInstance> {
   /**
@@ -18,8 +19,8 @@ export interface ITablePlugin<T extends ITableInstance> {
     render?: (
       value: any,
       index: number,
-      name: string,
       row: DataItem,
+      column: IColumn,
       table: T
     ) => React.ReactNode;
     onCell?: () => Record<string, any>;
